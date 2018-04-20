@@ -187,7 +187,7 @@ init -1 python hide:
 
     ## Music that is played while the user is at the main menu.
 
-    # config.main_menu_music = "main_menu_theme.ogg"
+    config.main_menu_music = "Lee_Rosevere_-_17_-_I_Was_Waiting_for_Him.mp3"
 
 
     #########################################

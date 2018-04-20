@@ -10,9 +10,9 @@ image land_backdrop = "the-land-backdrop.png"
 # Declare characters used by this game.
 define s = Character('Sea Witch', color="#c8ffc8")
 
-
 # The game starts here.
 label start:
+    stop music
 
     scene start_background
 
@@ -39,12 +39,16 @@ label start:
     label sea_chosen:
         scene sea_backdrop
         with fade
+        play music "Lee_Rosevere_-_13_-_Decompress.mp3" loop
         "You chose the sea!"
+        jump sea_game
+
         return
 
     label land_chosen:
         scene land_backdrop
         with fade
+        play music "Lee_Rosevere_-_10_-_Puzzle_Pieces.mp3" loop
         "You chose the land!"
         return
 
