@@ -12,6 +12,9 @@ define s = Character('Sea Witch', color="#c8ffc8")
 
 # The game starts here.
 label start:
+
+    $ land_solved = False
+
     stop music
 
     scene start_background
@@ -28,13 +31,17 @@ label start:
 
     "or Land?"
 
-    menu:
+    label sea_land_selection:
+        stop music
+        scene start_background
 
-        "Sea":
-            jump sea_chosen
+        menu:
 
-        "Land":
-            jump land_chosen
+            "Sea":
+                jump sea_chosen
+
+            "Land":
+                jump land_chosen
 
     label sea_chosen:
         scene sea_backdrop
