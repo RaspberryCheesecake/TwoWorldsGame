@@ -16,6 +16,4 @@ label sea_game:
 
     "Zomg, here is a new thing"
 
-    return
-
 

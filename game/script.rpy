@@ -50,6 +50,8 @@ label start:
         with fade
         play music "Lee_Rosevere_-_10_-_Puzzle_Pieces.mp3" loop
         "You chose the land!"
+        jump land_game
+
         return
 
     return
