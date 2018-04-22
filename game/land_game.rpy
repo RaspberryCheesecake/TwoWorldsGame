@@ -7,6 +7,7 @@ init:
         class Card(object):
             def __init__(self):
                 self.selected = False
+                self.number = 0
                 self.back = "card-back-land.png"
                 self.front = "card-front-land.png"
 
@@ -24,7 +25,7 @@ screen land_cards_screen(n_cards):
                 else:
                     add card.back  # Show back
 
-                action If( (card.selected ),  Return(False), Return(True))
+                action If( (card.selected ),  Return((False, card.number)), Return((True, card.number)) )
 
 
 
@@ -35,11 +36,15 @@ label land_game:
     $ n_land_cards = 4
     $ card_list = [Card() for n in range(0, n_land_cards)]
 
+    python:
+        for i, card in enumerate(card_list):
+            card.number = i
+
     show screen land_cards_screen(n_land_cards)
 
     label land_game_loop:
-        $ result = ui.interact()
-        $ card_list[0].selected = result
+        $ result, n = ui.interact()
+        $ card_list[n].selected = result
         python:
             if all(c.selected for c in card_list):
                 renpy.jump("solved_land_game")
