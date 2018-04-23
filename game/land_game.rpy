@@ -69,9 +69,9 @@ label land_game:
             
             for card in card_list:
                 if abs(card.coords[0] - x_selected) == 1 and card.coords[1] == y_selected:
-                    card.face_up = result
+                    card.face_up = not card.face_up
                 if card.coords[0] == x_selected and abs(card.coords[1] - y_selected) == 1:
-                    card.face_up = result
+                    card.face_up = not card.face_up
                 if card.coords[0] == x_selected and card.coords[1] == y_selected:
                     card.face_up = not result
 
