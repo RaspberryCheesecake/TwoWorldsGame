@@ -1,19 +1,78 @@
+image front = "card-front-sea.png"
+image back = "card-back-sea.png"
+
+init:
+    python:
+
+        sea_flowers = ["card-front-sea-flower%d.png" % i for i in range(1, 5)]
+
+
+screen sea_cards_screen(n_cards, n_rows):
+
+    grid n_cards n_rows at truecenter:
+        for card in sea_cards:
+
+            button:
+                background None
+
+                if card.face_up:
+                    add card.front  # Show front
+                else:
+                    # text card.coord_text  # for debugging
+                    add card.back  # Show back
+
+                action If( (card.selected),  Return((False, card.number)), Return((True, card.number)) )
+
+
 
 label sea_game:
+    scene sea_backdrop
 
-    init python:
-        timeout = 10.0
+    python:
+        if sea_solved == True:
+            renpy.jump("solved_sea_game")
 
-        def show_countdown(st, at):
-            if st > timeout:
-                return Text("0.0"), None
-            d = Text("{:.1f}".format(timeout - st))
-            return d, 0.1
+    "You chose the sea!"
 
-    image countdown = DynamicDisplayable(show_countdown)
+    $ n_rows = 4
+    $ n_cards_per_row = 3
+    $ n_cards_tot = n_rows * n_cards_per_row
+    $ sea_cards = [Card() for n in range(0, n_cards_tot)]
 
-    show countdown at truecenter
+    python:
 
-    "Zomg, here is a new thing"
+        for i, card in enumerate(sea_cards):
+            n_pairs = n_cards_tot / 2
+            card.front = sea_flowers[i // n_pairs]
+
+        for i, card in enumerate(sea_cards):
+            card.back = "card-back-sea.png"
+            card.number = i  # Give each card a unique label
+            card.coords = [i % n_cards_per_row, i // n_cards_per_row]
+
+    show screen sea_cards_screen(n_cards_per_row, n_rows)
+
+    label sea_game_loop:
+        python:
+
+            result, n = ui.interact()
+
+            sea_cards[n].selected = result
+
+            for card in sea_cards:
+                if card.selected:
+                    card.face_up = True
 
 
+            if all(c.face_up for c in sea_cards):
+                renpy.jump("solved_sea_game")
+
+        jump sea_game_loop
+
+
+label solved_sea_game:
+    "You solved the sea puzzle!"
+    hide screen sea_cards_screen
+    $ sea_solved = True
+
+    jump sea_land_selection

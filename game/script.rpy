@@ -14,6 +14,7 @@ define s = Character('Sea Witch', color="#c8ffc8")
 label start:
 
     $ land_solved = False
+    $ sea_solved = False
 
     stop music
 
@@ -56,7 +57,6 @@ label start:
         scene land_backdrop
         with fade
         play music "Lee_Rosevere_-_10_-_Puzzle_Pieces.mp3" loop
-        "You chose the land!"
         jump land_game
 
         return
