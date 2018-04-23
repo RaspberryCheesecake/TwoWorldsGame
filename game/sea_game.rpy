@@ -4,7 +4,7 @@ image back = "card-back-sea.png"
 init:
     python:
 
-        sea_flowers = ["card-front-sea-flower%d.png" % i for i in range(1, 5)]
+        sea_flowers = ["card-front-sea-flower%d.png" % i for i in range(0, 7)]
 
 
 screen sea_cards_screen(n_cards, n_rows):
@@ -40,10 +40,14 @@ label sea_game:
     $ sea_cards = [Card() for n in range(0, n_cards_tot)]
 
     python:
+        n_pairs = n_cards_tot / 2
+        pairs_list = range(0, n_pairs)
 
-        for i, card in enumerate(sea_cards):
-            n_pairs = n_cards_tot / 2
-            card.front = sea_flowers[i // n_pairs]
+        for i in pairs_list:
+            sea_cards[i].front = sea_flowers[i]
+            sea_cards[-(i+1)].front = sea_flowers[i]
+
+        renpy.random.shuffle(sea_cards)
 
         for i, card in enumerate(sea_cards):
             card.back = "card-back-sea.png"
