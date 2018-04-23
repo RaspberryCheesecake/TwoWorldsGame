@@ -1,24 +1,3 @@
-image front = "card-front-land.png"
-image back = "card-back-land.png"
-
-init:
-    python:
-
-        flowers = ["card-front-land-flower%d.png" % i for i in range(1, 3)]
-
-        class Card(object):
-            def __init__(self):
-                self.face_up = False
-                self.selected = False
-                self.number = 0
-                self.coords = [0, 0]
-                self.back = "card-back-land.png"
-                self.front = flowers[0]
-
-            @property
-            def coord_text(self):
-                return "{}, {}".format(self.coords[0], self.coords[1])
-
 
 screen land_cards_screen(n_cards, n_rows):
 

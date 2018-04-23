@@ -10,6 +10,27 @@ image land_backdrop = "the-land-backdrop.png"
 # Declare characters used by this game.
 define s = Character('Sea Witch', color="#c8ffc8")
 
+# Define the card objects used to play the games with
+init:
+    python:
+
+        flowers = ["card-front-land-flower%d.png" % i for i in range(1, 3)]
+
+        class Card(object):
+            def __init__(self):
+                self.face_up = False
+                self.selected = False
+                self.number = 0
+                self.coords = [0, 0]
+                self.back = "card-back-land.png"
+                self.front = flowers[0]
+                self.paired = False
+
+            @property
+            def coord_text(self):
+                return "{}, {}".format(self.coords[0], self.coords[1])
+
+
 # The game starts here.
 label start:
 

@@ -3,7 +3,6 @@ image back = "card-back-sea.png"
 
 init:
     python:
-
         sea_flowers = ["card-front-sea-flower%d.png" % i for i in range(0, 7)]
 
 
@@ -18,7 +17,6 @@ screen sea_cards_screen(n_cards, n_rows):
                 if card.face_up:
                     add card.front  # Show front
                 else:
-                    # text card.coord_text  # for debugging
                     add card.back  # Show back
 
                 action If( (card.selected),  Return((False, card.number)), Return((True, card.number)) )
@@ -34,8 +32,8 @@ label sea_game:
 
     "You chose the sea!"
 
-    $ n_rows = 4
-    $ n_cards_per_row = 3
+    $ n_rows = 3
+    $ n_cards_per_row = 4
     $ n_cards_tot = n_rows * n_cards_per_row
     $ sea_cards = [Card() for n in range(0, n_cards_tot)]
 
@@ -59,14 +57,35 @@ label sea_game:
     label sea_game_loop:
         python:
 
-            result, n = ui.interact()
+            attempts = 0
+            tries = 2
+            fronts = []
 
-            sea_cards[n].selected = result
+            while attempts < tries:
+            
+                result, n = ui.interact()
+                sea_cards[n].selected = result
 
+                for card in sea_cards:
+                    if card.selected:
+                        card.face_up = True
+                        fronts.append(card.front)
+
+                attempts += 1
+            
+            # If the fronts of the cards selected match, they are paired OK
+
+            if all(i == fronts[0] for i in fronts):
+                for card in sea_cards:
+                    if card.front ==  fronts[0]:
+                        card.paired = True
+
+            renpy.pause (1.0, hard = True)
+            
             for card in sea_cards:
-                if card.selected:
-                    card.face_up = True
-
+                 card.selected = False  # reset all selections
+                 if not card.paired:
+                     card.face_up = False  # Turn over any unpaired cards left
 
             if all(c.face_up for c in sea_cards):
                 renpy.jump("solved_sea_game")
