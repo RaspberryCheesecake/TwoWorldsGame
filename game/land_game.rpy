@@ -9,6 +9,7 @@ init:
         class Card(object):
             def __init__(self):
                 self.face_up = False
+                self.selected = False
                 self.number = 0
                 self.coords = [0, 0]
                 self.back = "card-back-land.png"
@@ -30,11 +31,10 @@ screen land_cards_screen(n_cards, n_rows):
                 if card.face_up:
                     add card.front  # Show front
                 else:
-                    text card.coord_text
-                    # add card.back  # Show back
+                    # text card.coord_text  # for debugging
+                    add card.back  # Show back
 
-                action If( (card.face_up ),  Return((False, card.number)), Return((True, card.number)) )
-
+                action If( (card.selected),  Return((False, card.number)), Return((True, card.number)) )
 
 
 
@@ -47,7 +47,7 @@ label land_game:
 
     "You chose the land!"
 
-    $ n_rows = 3
+    $ n_rows = 4
     $ n_cards_per_row = 4
     $ card_list = [Card() for n in range(0, n_cards_per_row * n_rows)]
 
@@ -59,9 +59,21 @@ label land_game:
     show screen land_cards_screen(n_cards_per_row, n_rows)
 
     label land_game_loop:
-        $ result, n = ui.interact()
-        $ card_list[n].face_up = result
         python:
+
+            result, n = ui.interact()
+
+            card_list[n].selected = result
+
+            x_selected, y_selected = card_list[n].coords
+            
+            for card in card_list:
+                if abs(card.coords[0] - x_selected) == 1 and card.coords[1] == y_selected:
+                    card.face_up = result
+                if card.coords[0] == x_selected and abs(card.coords[1] - y_selected) == 1:
+                    card.face_up = result
+                if card.coords[0] == x_selected and card.coords[1] == y_selected:
+                    card.face_up = not result
 
             if all(c.face_up for c in card_list):
                 renpy.jump("solved_land_game")
