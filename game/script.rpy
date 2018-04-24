@@ -1,4 +1,7 @@
-﻿# You can place the script of your game in this file.
+﻿# Main script for Two Worlds game
+# By @hannah.hazi
+# With thanks to Fraqtive for the background images
+# And to Lee Rosevere for the music
 
 # Declare images below this line, using the image statement.
 image start_background = "pink-start-screen.png"
